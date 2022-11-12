@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 import db
 import os
+import methods_for_code as ml
 
 
 
@@ -9,6 +10,9 @@ Debug = True
 app = Flask(__name__)
 app.config.from_object(__name__)
 CORS(app, resources={r"./*":{'origins': '*'}})
+
+machine = ml.MachineLearning();
+
 
 def createDirectory(name):
     os.mkdir(f'Images/{name}');
@@ -40,4 +44,5 @@ def handle():
 if __name__ == "__main__":
     # test = db.DB()
     # test.createDatabase()
-    app.run();
+    app.run(host="0.0.0.0",port=3000);
+    machine.look_for_person();

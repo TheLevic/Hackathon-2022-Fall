@@ -37,7 +37,7 @@
         ></b-form-input>
       </b-form-group>
       <div class="text-center">
-        <b-button @click="onTest()" size="lg" variant="primary"
+        <b-button @click="onTest()" type="submit" size="lg" variant="primary"
           >Submit</b-button
         >
       </div>
@@ -53,7 +53,7 @@ export default {
     return {
       file: [],
       filesAccumulated: [],
-      ip: "http://127.0.0.1:5000/",
+      ip: "http://10.35.135.145:3000/",
       name: { Name: "" },
       songName: { Song: "" },
     };
