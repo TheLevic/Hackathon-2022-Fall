@@ -27,17 +27,20 @@
         >
       </b-form-group>
     </b-form>
-    <button @click="click()">adfafadfa</button>
+    <button @click="onTest()">adfafadfa</button>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "HelloWorld",
   data() {
     return {
       file: [],
       filesAccumulated: [],
+      ip: "172.20.10.5:5000/",
+      test: "Hello",
     };
   },
   methods: {
@@ -52,9 +55,11 @@ export default {
         }
       });
     },
+    onTest(test) {
+      axios
+        .post(this.ip + "handle", test)
+        .then((response) => console.log(response.data));
+    },
   },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
