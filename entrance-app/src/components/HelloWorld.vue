@@ -26,8 +26,19 @@
           ></b-form-file
         >
       </b-form-group>
+      <b-form-group id="input-group-3" label="Song Name:" label-for="songName">
+        <b-form-input
+          id="Name"
+          type="text"
+          placeholder="Enter Song Name"
+          v-model="songName.Song"
+          required
+        ></b-form-input>
+      </b-form-group>
+      <div class="text-center">
+        <b-button type="submit" size="lg" variant="primary">Submit</b-button>
+      </div>
     </b-form>
-    <button @click="onTest()">adfafadfa</button>
   </div>
 </template>
 
@@ -41,12 +52,10 @@ export default {
       filesAccumulated: [],
       ip: "http://127.0.0.1:5000/",
       test: { Name: "Levi" },
+      songName: { Song: "" },
     };
   },
   methods: {
-    click() {
-      console.log(this.filesAccumulated);
-    },
     onClick() {
       this.file.forEach((thisFile) => {
         console.log(thisFile);
