@@ -18,25 +18,28 @@ class MachineLearning:
 
     def train_model(self,data_dir):
         #load image data
-        img_height=1200 
-        img_width=900
+        img_height=900 
+        img_width=1200
         batch_size=1
         train_ds = tf.keras.utils.image_dataset_from_directory(
                     data_dir,
                     label_mode='categorical',
-                    validation_split=0.2,
                     subset="training",
+                    validation_split=0.1,
                     seed=123,
                     image_size=(img_height, img_width),
                     batch_size=batch_size)
+        
         # define model
         input_=tf.keras.layers.Input((img_height,img_width,3))
         x=tf.keras.layers.Conv2D(64,(3,3), activation='relu')(input_)
+        #x=tf.keras.layers.Dropout(0.2)(x)
         x=tf.keras.layers.MaxPool2D((10,10))(x)
         x=tf.keras.layers.Conv2D(64, (3,3),activation='relu')(x)
         x=tf.keras.layers.MaxPool2D((9,9))(x)
         x=tf.keras.layers.Flatten()(x)
         x=tf.keras.layers.Dense(50, activation='relu')(x)
+        #x=tf.keras.layers.Dropout(0.2)(x)
         x=tf.keras.layers.Dense(2, activation='softmax')(x)
 
         model=tf.keras.Model(inputs=input_, outputs=x)
@@ -53,13 +56,13 @@ class MachineLearning:
 
     def who_is_this(self,image_loc,model_path, data_dir):
         person=None 
-        img_height=1200 
-        img_width=900
+        img_height=900
+        img_width=1200
         batch_size=1
         train_ds = tf.keras.utils.image_dataset_from_directory(
                     data_dir,
                     label_mode='categorical',
-                    validation_split=0.2,
+                    validation_split=0.1,
                     subset="training",
                     seed=123,
                     image_size=(img_height, img_width),
@@ -69,11 +72,15 @@ class MachineLearning:
         # load model architecture
         input_=tf.keras.layers.Input((img_height,img_width,3))
         x=tf.keras.layers.Conv2D(64,(3,3), activation='relu')(input_)
+        #x=tf.keras.layers.Dropout(0.2)(x)
+
         x=tf.keras.layers.MaxPool2D((10,10))(x)
         x=tf.keras.layers.Conv2D(64, (3,3),activation='relu')(x)
         x=tf.keras.layers.MaxPool2D((9,9))(x)
         x=tf.keras.layers.Flatten()(x)
         x=tf.keras.layers.Dense(50, activation='relu')(x)
+        #x=tf.keras.layers.Dropout(0.2)(x)
+
         x=tf.keras.layers.Dense(2, activation='softmax')(x)
 
         model=tf.keras.Model(inputs=input_, outputs=x)
@@ -81,45 +88,39 @@ class MachineLearning:
         model.load_weights(model_path)
 
         # load image 
-        image= np.array(Image.open(image_loc).resize((900,1200))).reshape((1,1200,900,3))
+        image= np.array(Image.open(image_loc).resize((1200,900))).reshape((1,900,1200,3))
 
         # make prediction
         prediction=model.predict(image)
+        print(prediction)
         max_val=max(prediction[0])
 
-        if max_val > .6:
+        if max_val > .80:
             person=train_ds.class_names[np.where(prediction[0]==max_val)[0][0]]
-        # return person
-
+            print(person);
+            # return person;
     def look_for_person(self):
-        distance_val= 10;
-        distancedata=serial.Serial('com4',9600)
         time.sleep(1)
         while True:
-            print(os.listdir("../Images/"))
+            
             if self.personAdded:
-                self.train_model('../Images/')
+                self.train_model('./Images/')
                 self.togglePersonAdded();
-            elif os.listdir("../Images/") == "":
+            elif os.listdir("./Images/") == "":
                 # pass;
                 print("Waiting")
             else:
-                while (distancedata.inWaiting()==0):
-                    pass
-                data=distancedata.readline()
-                data=str(data, 'utf-8')
-                data=data.strip("\r\n")
-
-        
-                if data > distance_val:
-
-                    cam=cv2.VideoCapture(0)
-                    cv2.namedWindow("test")
-                    ret,frame = cam.read()
-                    img_name='./image.jpg'
-                    cv2.imwrite(img_name, frame)
-                    cam.release()
-                    cv2.destroyAllWindows()
-                    person = self.who_is_this('./img.jpg','./model')
-                    # print(person)
+                cam=cv2.VideoCapture(0)
+                cv2.namedWindow("test")
+                time.sleep(2)
+                ret,frame = cam.read()
+                img_name='/Users/thelevic/code/hackathon31/Hackathon-2022-Fall/image.jpg'
+                cv2.imwrite(img_name, frame)
+                cam.release()
+                cv2.destroyAllWindows()
+                person = self.who_is_this('/Users/thelevic/code/hackathon31/Hackathon-2022-Fall/image.jpg','/Users/thelevic/code/hackathon31/Hackathon-2022-Fall/backend/models/best.hdf5','./Images')
+                if person != None:
+                    print(person)
+                    break
+                    
             

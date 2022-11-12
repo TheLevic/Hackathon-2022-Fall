@@ -2,7 +2,6 @@ from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 import db
 import os
-import main
 
 
 
@@ -35,10 +34,7 @@ def handle():
         database = db.DB();
         database.createDatabase();
         database.insertName(userName,personsFilePath,songName);
-        main.changed = not main.changed;
     return Response("", status=200)
 
 if __name__ == "__main__":
-    # test = db.DB()
-    # test.createDatabase()
     app.run(host="0.0.0.0",port=3000);
