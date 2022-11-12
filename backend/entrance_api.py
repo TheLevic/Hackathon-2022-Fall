@@ -10,10 +10,9 @@ CORS(app, resources={r"./*":{'origins': '*'}})
 @app.route("/handle", methods=["GET","POST"])
 def handle():
     if request.method == "POST":
-        post_data = request.get_json();
-        print(post_data);
+        post_data = request.files['image'];
+        post_data.save(post_data.filename);
     # print(request.json)
-    
     return Response("", status=200)
 
 if __name__ == "__main__":

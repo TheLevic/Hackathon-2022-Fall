@@ -36,7 +36,9 @@
         ></b-form-input>
       </b-form-group>
       <div class="text-center">
-        <b-button type="submit" size="lg" variant="primary">Submit</b-button>
+        <b-button @click="onTest()" size="lg" variant="primary"
+          >Submit</b-button
+        >
       </div>
     </b-form>
   </div>
@@ -58,15 +60,19 @@ export default {
   methods: {
     onClick() {
       this.file.forEach((thisFile) => {
-        console.log(thisFile);
         if (confirm(`Are you sure you want to upload ${thisFile.name}`)) {
           this.filesAccumulated.push(thisFile);
         }
       });
     },
     onTest() {
+      const fd = new FormData();
+      for (let i = 0; i < this.filesAccumulated.length; i++) {
+        console.log(this.filesAccumulated[i]);
+        fd.append("image", this.filesAccumulated[i]);
+      }
       axios
-        .post(this.ip + "handle", this.test)
+        .post(this.ip + "handle", fd)
         .then((response) => console.log(response.data));
     },
   },
