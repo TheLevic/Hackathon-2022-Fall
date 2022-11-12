@@ -7,12 +7,16 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 CORS(app, resources={r"./*":{'origins': '*'}})
 
-@app.route("/handle", methods=["POST"])
+@app.route("/handle", methods=["GET","POST"])
 def handle():
-    print(request.json)
+    if request.method == "POST":
+        post_data = request.get_json();
+        print(post_data);
+    # print(request.json)
+    
     return Response("", status=200)
 
 if __name__ == "__main__":
     # test = db.DB()
     # test.createDatabase()
-    app.run(host="0.0.0.0")
+    app.run();

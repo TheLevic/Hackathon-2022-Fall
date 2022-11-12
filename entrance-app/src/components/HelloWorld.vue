@@ -39,8 +39,8 @@ export default {
     return {
       file: [],
       filesAccumulated: [],
-      ip: "172.20.10.5:5000/",
-      test: "Hello",
+      ip: "http://127.0.0.1:5000/",
+      test: { Name: "Levi" },
     };
   },
   methods: {
@@ -55,9 +55,9 @@ export default {
         }
       });
     },
-    onTest(test) {
+    onTest() {
       axios
-        .post(this.ip + "handle", test)
+        .post(this.ip + "handle", this.test)
         .then((response) => console.log(response.data));
     },
   },
