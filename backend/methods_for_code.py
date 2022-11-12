@@ -92,17 +92,14 @@ class MachineLearning:
         # return person
 
     def look_for_person(self):
-
         distance_val= 10;
         distancedata=serial.Serial('com4',9600)
         time.sleep(1)
-        person_added=False
-
         while True:
             print(os.listdir("../Images/"))
-            if person_added:
-                self.train_model('./Images')
-                person_added=False
+            if self.personAdded:
+                self.train_model('../Images/')
+                self.togglePersonAdded();
             elif os.listdir("../Images/") == "":
                 # pass;
                 print("Waiting")

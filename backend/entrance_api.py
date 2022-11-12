@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request, Response
 from flask_cors import CORS
 import db
 import os
-import methods_for_code as ml
+import main
 
 
 
@@ -11,7 +11,6 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 CORS(app, resources={r"./*":{'origins': '*'}})
 
-machine = ml.MachineLearning();
 
 
 def createDirectory(name):
@@ -31,18 +30,15 @@ def handle():
         for file in post_data:
             file.save("Images/" + userName + "/" + file.filename);
         personsFilePath = "Images/" + userName +"/";
-        
         #Get the song
         songName = request.form['song']
         database = db.DB();
         database.createDatabase();
         database.insertName(userName,personsFilePath,songName);
-        
-        
+        main.changed = not main.changed;
     return Response("", status=200)
 
 if __name__ == "__main__":
     # test = db.DB()
     # test.createDatabase()
     app.run(host="0.0.0.0",port=3000);
-    machine.look_for_person();
