@@ -14,6 +14,7 @@
           type="text"
           placeholder="Enter Your Name"
           required
+          v-model="name.Name"
         ></b-form-input>
       </b-form-group>
       <b-form-group id="input-group-2" label="Pictures:" label-for="input-2">
@@ -53,7 +54,7 @@ export default {
       file: [],
       filesAccumulated: [],
       ip: "http://127.0.0.1:5000/",
-      test: { Name: "Levi" },
+      name: { Name: "" },
       songName: { Song: "" },
     };
   },
@@ -68,9 +69,10 @@ export default {
     onTest() {
       const fd = new FormData();
       for (let i = 0; i < this.filesAccumulated.length; i++) {
-        console.log(this.filesAccumulated[i]);
         fd.append("image", this.filesAccumulated[i]);
       }
+      fd.append("name", this.name.Name);
+      fd.append("song", this.songName.Song);
       axios
         .post(this.ip + "handle", fd)
         .then((response) => console.log(response.data));
