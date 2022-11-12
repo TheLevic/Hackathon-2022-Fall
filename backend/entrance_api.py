@@ -26,9 +26,13 @@ def handle():
         post_data = request.files.getlist("image");
         for file in post_data:
             file.save("Images/" + userName + "/" + file.filename);
+        personsFilePath = "Images/" + userName +"/";
         
         #Get the song
         songName = request.form['song']
+        database = db.DB();
+        database.createDatabase();
+        database.insertName(userName,personsFilePath,songName);
         
         
     return Response("", status=200)
