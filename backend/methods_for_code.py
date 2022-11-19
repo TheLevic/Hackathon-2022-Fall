@@ -105,9 +105,9 @@ class MachineLearning:
         while True:
             
             if self.personAdded:
-                self.train_model('./Images/')
+                self.train_model('../Images/')
                 self.togglePersonAdded();
-            elif os.listdir("./Images/") == "":
+            elif os.listdir("../Images/") == "":
                 # pass;
                 print("Waiting")
             else:
@@ -119,7 +119,7 @@ class MachineLearning:
                 cv2.imwrite(img_name, frame)
                 cam.release()
                 cv2.destroyAllWindows()
-                person = self.who_is_this(self.imageName,"./models/best.hdf5",'./Images')
+                person = self.who_is_this(self.imageName,"./models/best.hdf5",'../Images/')
                 if person != None:
                     print(person)
                     break
