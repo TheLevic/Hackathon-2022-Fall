@@ -37,7 +37,7 @@
         ></b-form-input>
       </b-form-group>
       <div class="text-center">
-        <b-button @click="onTest()" type="submit" size="lg" variant="primary"
+        <b-button @click="onButtonClick()" size="lg" variant="primary"
           >Submit</b-button
         >
       </div>
@@ -64,16 +64,59 @@ export default {
         this.filesAccumulated.push(thisFile);
       });
     },
-    onTest() {
-      const fd = new FormData();
-      for (let i = 0; i < this.filesAccumulated.length; i++) {
-        fd.append("image", this.filesAccumulated[i]);
-      }
-      fd.append("name", this.name.Name);
-      fd.append("song", this.songName.Song);
+    //Post json name object to server with request headers
+    postName() {
       axios
-        .post(this.ip + "handle", fd)
-        .then((response) => console.log(response.data));
+        .post(this.ip + "name", this.name, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    //Post json object to server with request headers
+    postSongName() {
+      axios
+        .post(this.ip + "songName", this.songName, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        });
+    },
+    //Post files from filesAccumulated to server with request headers
+    postFiles() {
+      let formData = new FormData();
+      for (let i = 0; i < this.filesAccumulated.length; i++) {
+        formData.append("image", this.filesAccumulated[i]);
+      }
+
+      axios
+        .post(this.ip + "files", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        });
+    },
+    async onButtonClick() {
+      //Create form data to uplaod to server
+      this.postName();
+      await new Promise((r) => setTimeout(r, 30));
+      this.postFiles();
+      //Sleep for 30 milliseconds
+      await new Promise((r) => setTimeout(r, 30));
+      this.postSongName();
     },
   },
 };

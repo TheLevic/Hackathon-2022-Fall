@@ -6,7 +6,7 @@ class DB():
         pass;
     def createDatabase(self):
         if (os.path.exists("database.db")):
-            pass;
+            print("Database already exists");
         else:
             conn = sqlite3.connect("database.db");
             cursor = conn.cursor();
@@ -19,17 +19,13 @@ class DB():
     def insertName(self, name: str,images,song):
         conn = self.createConn();
         cursor = conn.cursor();
-        cursor.execute("""INSERT INTO person (name, images, song) values(?,?,?)""",(name,images, song));
+        cursor.execute("""INSERT INTO person (name, images, song) values(?,?,?)""",(name,images,song));
+        print("Added to db");
         conn.commit();
         conn.close();
 
     def insertImages(self, images):
         pass;
     def insertSong(self, song: str):
+
         pass;
-
-db = DB();
-db.createDatabase();
-db.insertName("other1", "other", "other");
-
-
