@@ -6,7 +6,7 @@
       integrity="sha384-H4X+4tKc7b8s4GoMrylmy2ssQYpDHoqzPa9aKXbDwPoPUA3Ra8PA5dGzijN+ePnH"
       crossorigin="anonymous"
     />
-    <h1 class="text-center">Placeholder</h1>
+    <h1 class="text-center">Welcome Home App</h1>
     <b-form>
       <b-form-group id="input-group-1" label="Name:" label-for="Name">
         <b-form-input
@@ -53,7 +53,7 @@ export default {
     return {
       file: [],
       filesAccumulated: [],
-      ip: "http://10.35.135.145:3000/",
+      ip: "http://192.168.0.105:3000/",
       name: { Name: "" },
       songName: { Song: "" },
     };
@@ -61,9 +61,7 @@ export default {
   methods: {
     onClick() {
       this.file.forEach((thisFile) => {
-        if (confirm(`Are you sure you want to upload ${thisFile.name}`)) {
-          this.filesAccumulated.push(thisFile);
-        }
+        this.filesAccumulated.push(thisFile);
       });
     },
     onTest() {

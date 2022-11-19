@@ -12,6 +12,7 @@ tf.compat.v1.enable_eager_execution()
 class MachineLearning:
     def __init__(self):
         self.personAdded = False;
+        self.imageName = 'test.jpg';
 
     def togglePersonAdded(self):
         self.personAdded = not self.personAdded;
@@ -112,13 +113,13 @@ class MachineLearning:
             else:
                 cam=cv2.VideoCapture(0)
                 cv2.namedWindow("test")
-                time.sleep(2)
+                time.sleep(1)
                 ret,frame = cam.read()
-                img_name='/Users/thelevic/code/hackathon31/Hackathon-2022-Fall/image.jpg'
+                img_name=self.imageName;
                 cv2.imwrite(img_name, frame)
                 cam.release()
                 cv2.destroyAllWindows()
-                person = self.who_is_this('/Users/thelevic/code/hackathon31/Hackathon-2022-Fall/image.jpg','/Users/thelevic/code/hackathon31/Hackathon-2022-Fall/backend/models/best.hdf5','./Images')
+                person = self.who_is_this(self.imageName,"./models/best.hdf5",'./Images')
                 if person != None:
                     print(person)
                     break

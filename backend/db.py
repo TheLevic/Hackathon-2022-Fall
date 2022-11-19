@@ -6,7 +6,7 @@ class DB():
         pass;
     def createDatabase(self):
         if (os.path.exists("database.db")):
-            print("Exists")
+            pass;
         else:
             conn = sqlite3.connect("database.db");
             cursor = conn.cursor();
