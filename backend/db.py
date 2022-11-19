@@ -6,30 +6,29 @@ class DB():
         pass;
     def createDatabase(self):
         if (os.path.exists("database.db")):
-            print("Exists")
+            print("Database already exists");
         else:
             conn = sqlite3.connect("database.db");
             cursor = conn.cursor();
-            cursor.execute("CREATE TABLE person(name TEXT, images TEXT, song TEXT)")
+            cursor.execute("CREATE TABLE person(name TEXT, songname TEXT)")
+            conn.commit();
+            conn.close();
     def createConn(self):
         conn = sqlite3.connect("database.db");
         return conn;
 
-
-    def insertName(self, name: str,images,song):
+    # Create method to just insert the name into the database
+    def insertName(self, name: str):
         conn = self.createConn();
         cursor = conn.cursor();
-        cursor.execute("""INSERT INTO person (name, images, song) values(?,?,?)""",(name,images, song));
+        cursor.execute("INSERT INTO person VALUES(?, ?)", (name, ""));
         conn.commit();
         conn.close();
 
-    def insertImages(self, images):
-        pass;
-    def insertSong(self, song: str):
-        pass;
-
-db = DB();
-db.createDatabase();
-db.insertName("other1", "other", "other");
-
-
+    # Update the songname for a user in the database
+    def updateSongName(self, name: str, songname: str):
+        conn = self.createConn();
+        cursor = conn.cursor();
+        cursor.execute("UPDATE person SET songname = ? WHERE name = ?", (songname, name));
+        conn.commit();
+        conn.close();
